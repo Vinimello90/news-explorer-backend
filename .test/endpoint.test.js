@@ -1,27 +1,29 @@
 const supertest = require('supertest');
 const mongoose = require('mongoose');
 const app = require('../app.js');
+const User = require('../models/user.js');
+const { bodyBlacklist } = require('express-winston');
 
 const request = supertest(app);
 
-afterAll(async () => {
-  await mongoose.connection.close();
-});
-
-const user = {
+const validUser = {
   email: 'test@test.com',
   password: 'password123',
   username: 'test123',
 };
 
-// describe('POST "/signup"', () => {
-//   it('#SUCCESS - Should create a new user and respond with status 201', async () => {
-//     const response = await request.post('/signup').send(user).set('accept', 'application/json');
-//     const { header, status } = response;
-//     expect(header['content-type']).toMatch(/json/);
-//     expect(status).toBe(201);
-//   });
-// });
+afterAll(async () => {
+  await User.findOneAndDelete({ email: validUser.email });
+  await mongoose.connection.close();
+});
+
+describe('POST "/signup"', () => {
+  it('#SUCCESS - Should create a new user and respond with status 201', async () => {
+    const response = await request.post('/signup').send(validUser).set('accept', 'application/json');
+    const { status } = response;
+    expect(status).toBe(201);
+  });
+});
 
 describe('GET "/cards/me"', () => {
   it('#SUCCESS - Should respond with user data and status 200', async () => {
