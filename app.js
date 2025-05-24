@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const usersRouter = require('./routes/users');
 require('dotenv').config();
 
 const { API_PORT, DATABASE_URL } = process.env;
@@ -13,6 +14,17 @@ const app = express();
 
 const { PORT = API_PORT } = process.env;
 
-app.listen(PORT, () => {
-  console.log(`App listening to port ${API_PORT}`);
+app.use(express.json());
+
+app.use('/cards', usersRouter);
+app.use('*', (req, res) => {
+  res.status(404).send({ message: 'The request was not found' });
 });
+
+if (process.env.NODE_ENV !== 'test') {
+  app.listen(PORT, () => {
+    console.log(`App listening to port ${API_PORT}`);
+  });
+}
+
+module.exports = app;
