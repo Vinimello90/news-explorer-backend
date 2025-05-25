@@ -1,8 +1,9 @@
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const usersRouter = require('./routes/users');
 const { createUser, login } = require('./controllers/users');
-require('dotenv').config();
+const errorHandler = require('./middlewares/errorHandler');
 
 const { API_PORT, DATABASE_URL } = process.env;
 
@@ -20,10 +21,12 @@ app.use(express.json());
 app.post('/signup', createUser);
 app.post('/signin', login);
 
-app.use('/cards', usersRouter);
+app.use('/users', usersRouter);
 app.use('*', (req, res) => {
   res.status(404).send({ message: 'The request was not found' });
 });
+
+app.use(errorHandler);
 
 if (process.env.NODE_ENV !== 'test') {
   app.listen(PORT, () => {

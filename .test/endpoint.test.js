@@ -25,6 +25,19 @@ describe('POST "/signup"', () => {
   });
 });
 
+describe('POST "/signin"', () => {
+  it('#SUCCESS - Should authenticate a user and respond with a token and status 201', async () => {
+    const response = await request
+      .post('/signin')
+      .send({ email: validUser.email, password: validUser.password })
+      .set('accept', 'application/json');
+    const { status, header, body } = response;
+    expect(status).toBe(200);
+    expect(header['content-type']).toMatch(/json/);
+    expect(typeof body.token).toBe('string');
+  });
+});
+
 describe('GET "/cards/me"', () => {
   it('#SUCCESS - Should respond with user data and status 200', async () => {
     const response = await request.get('/cards/me').set('accept', 'application/json');
