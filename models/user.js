@@ -1,3 +1,4 @@
+const bcrypt = require('bcryptjs');
 const mongoose = require('mongoose');
 const validator = require('validator');
 
@@ -22,6 +23,12 @@ const userSchema = new Schema({
     maxLength: 30,
     required: true,
   },
+});
+
+userSchema.static('findUserByCredencials', async function findUserByCredencials(email, password) {
+  const user = await this.findOne({ email }).select('+password');
+  const matched = await bcrypt.compare(password, user.password);
+  return user;
 });
 
 module.exports = mongoose.model('User', userSchema);
