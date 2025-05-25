@@ -32,7 +32,7 @@ const cardSchema = new mongoose.Schema({
     message: '`link` value is not a valid URL',
   },
   publishedAt: { type: Date },
-  owner: { type: Schema.types.ObjectId, ref: 'User' },
+  owner: { type: mongoose.Schema.types.ObjectId, ref: 'User' },
 });
 
 module.exports = mongoose.model('Card', cardSchema);

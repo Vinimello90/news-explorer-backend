@@ -3,9 +3,7 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 const UnauthorizedError = require('../utils/errors/UnauthorizedError');
 
-const { Schema } = mongoose;
-
-const userSchema = new Schema({
+const userSchema = new mongoose.Schema({
   email: {
     type: String,
     unique: true,

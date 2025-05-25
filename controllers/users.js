@@ -1,8 +1,6 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
-const NotFoundError = require('../utils/errors/NotFoundError');
-const UnauthorizedError = require('../utils/errors/UnauthorizedError');
 
 module.exports.login = async (req, res, next) => {
   try {
