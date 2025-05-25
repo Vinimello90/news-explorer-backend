@@ -1,7 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const usersRouter = require('./routes/users');
-const { createUser } = require('./controllers/users');
+const { createUser, login } = require('./controllers/users');
 require('dotenv').config();
 
 const { API_PORT, DATABASE_URL } = process.env;
@@ -18,6 +18,7 @@ const { PORT = API_PORT } = process.env;
 app.use(express.json());
 
 app.post('/signup', createUser);
+app.post('/signin', login);
 
 app.use('/cards', usersRouter);
 app.use('*', (req, res) => {
