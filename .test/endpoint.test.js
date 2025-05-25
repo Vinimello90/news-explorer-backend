@@ -2,7 +2,6 @@ const supertest = require('supertest');
 const mongoose = require('mongoose');
 const app = require('../app.js');
 const User = require('../models/user.js');
-const { bodyBlacklist } = require('express-winston');
 
 const request = supertest(app);
 
@@ -11,6 +10,8 @@ const validUser = {
   password: 'password123',
   username: 'test123',
 };
+
+let token;
 
 afterAll(async () => {
   await User.findOneAndDelete({ email: validUser.email });
@@ -32,15 +33,19 @@ describe('POST "/signin"', () => {
       .send({ email: validUser.email, password: validUser.password })
       .set('accept', 'application/json');
     const { status, header, body } = response;
+    token = body.token;
     expect(status).toBe(200);
     expect(header['content-type']).toMatch(/json/);
-    expect(typeof body.token).toBe('string');
+    expect(body).toHaveProperty('token');
   });
 });
 
-describe('GET "/cards/me"', () => {
+describe('GET "/users/me"', () => {
   it('#SUCCESS - Should respond with user data and status 200', async () => {
-    const response = await request.get('/cards/me').set('accept', 'application/json');
+    const response = await request
+      .get('/users/me')
+      .set('accept', 'application/json')
+      .set('authorization', `Bearer ${token}`);
     const { header, status, body } = response;
     const { _id, email, username } = body;
     expect(status).toBe(200);
