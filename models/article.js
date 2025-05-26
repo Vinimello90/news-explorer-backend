@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const cardSchema = new mongoose.Schema({
+const articleSchema = new mongoose.Schema({
   title: {
     type: String,
     required: true,
@@ -17,11 +17,10 @@ const cardSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  type: String,
-  required: true,
   url: {
     type: String,
     required: true,
+    unique: true,
     validator: (url) => /^(https?:\/\/|w{3}\.)([\w-]+\.)+([\w]{2,})(\/[\w._~:/?%#[\]@!$&'()*+,;=-]*)?$/.test(url),
     message: '`link` value is not a valid URL',
   },
@@ -31,8 +30,8 @@ const cardSchema = new mongoose.Schema({
     validator: (url) => /^(https?:\/\/|w{3}\.)([\w-]+\.)+([\w]{2,})(\/[\w._~:/?%#[\]@!$&'()*+,;=-]*)?$/.test(url),
     message: '`link` value is not a valid URL',
   },
-  publishedAt: { type: Date },
-  owner: { type: mongoose.Schema.types.ObjectId, ref: 'User' },
+  publishedAt: String,
+  owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
 });
 
-module.exports = mongoose.model('Card', cardSchema);
+module.exports = mongoose.model('Card', articleSchema);

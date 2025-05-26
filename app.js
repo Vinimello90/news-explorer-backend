@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const usersRouter = require('./routes/users');
+const articlesRouter = require('./routes/articles');
 const { createUser, login } = require('./controllers/users');
 const errorHandler = require('./middlewares/errorHandler');
 const auth = require('./middlewares/auth');
@@ -25,6 +26,7 @@ app.post('/signin', login);
 app.use(auth);
 
 app.use('/users', usersRouter);
+app.use('/cards', articlesRouter);
 app.use('*', (req, res) => {
   res.status(404).send({ message: 'The request was not found' });
 });
