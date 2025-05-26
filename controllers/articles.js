@@ -1,10 +1,17 @@
 const Card = require('../models/article');
-Card.create();
 
 module.exports.createArticle = async (req, res, next) => {
   try {
     const { _id } = req.user;
-    const { title, description, keyword, source, url, urlToImage, publishedAt } = req.body;
+    const {
+      title,
+      description,
+      keyword,
+      source,
+      url,
+      urlToImage,
+      publishedAt,
+    } = req.body;
     const newArticle = await Card.create({
       title,
       description,
@@ -20,6 +27,7 @@ module.exports.createArticle = async (req, res, next) => {
     next(err);
   }
 };
+
 module.exports.getArticles = async (req, res, next) => {
   try {
     const { _id } = req.user;
