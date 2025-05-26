@@ -20,3 +20,12 @@ module.exports.createArticle = async (req, res, next) => {
     next(err);
   }
 };
+module.exports.getArticles = async (req, res, next) => {
+  try {
+    const { _id } = req.user;
+    const articles = await Card.find({ owner: _id });
+    res.status(200).send(articles);
+  } catch (err) {
+    next(err);
+  }
+};
