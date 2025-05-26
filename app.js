@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const usersRouter = require('./routes/users');
 const { createUser, login } = require('./controllers/users');
 const errorHandler = require('./middlewares/errorHandler');
+const auth = require('./middlewares/auth');
 
 const { API_PORT, DATABASE_URL } = process.env;
 
@@ -20,6 +21,8 @@ app.use(express.json());
 
 app.post('/signup', createUser);
 app.post('/signin', login);
+
+app.use(auth);
 
 app.use('/users', usersRouter);
 app.use('*', (req, res) => {
