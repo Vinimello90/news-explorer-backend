@@ -2,6 +2,7 @@ const supertest = require('supertest');
 const mongoose = require('mongoose');
 const app = require('../app.js');
 const User = require('../models/user.js');
+const Article = require('../models/article.js');
 
 const request = supertest(app);
 
@@ -12,6 +13,7 @@ const validUser = {
 };
 
 let token;
+let articleID;
 
 afterAll(async () => {
   await User.findOneAndDelete({ email: validUser.email });
@@ -20,7 +22,10 @@ afterAll(async () => {
 
 describe('POST "/signup"', () => {
   it('#SUCCESS - Should create a new user and respond with status 201', async () => {
-    const response = await request.post('/signup').send(validUser).set('accept', 'application/json');
+    const response = await request
+      .post('/signup')
+      .send(validUser)
+      .set('accept', 'application/json');
     const { status } = response;
     expect(status).toBe(201);
   });
@@ -53,5 +58,87 @@ describe('GET "/users/me"', () => {
     expect(typeof _id).toBe('string');
     expect(typeof email).toBe('string');
     expect(typeof username).toBe('string');
+  });
+});
+
+describe('POST "/articles"', () => {
+  it('#SUCCESS - Should create a new article and respond with new article data and status 201', async () => {
+    const response = await request
+      .post('/articles')
+      .send({
+        title:
+          'Tecnologia ajudou a mudar debate sobre OVNIs, afirma ex-Pentágono',
+        description:
+          'Luis Elizondo, ex-Pentágono, afirmou à CNN que avanços tecnológicos e nova geração abriram espaço para debater OVNIs\nO post Tecnologia ajudou a mudar debate sobre OVNIs, afirma ex-Pentágono apareceu primeiro em Olhar Digital.',
+        keyword: 'tecnologia',
+        source: 'Olhardigital.com.br',
+        url: 'https://olhardigital.com.br/2025/05/19/ciencia-e-espaco/tecnologia-ajudou-a-mudar-debate-sobre-ovnis-afirma-ex-pentagono/',
+        urlToImage:
+          'https://olhardigital.com.br/wp-content/uploads/2025/05/ovni.jpg',
+        publishedAt: '2025-05-19T18:31:18Z',
+      })
+      .set('accept', 'application/json')
+      .set('authorization', `Bearer ${token}`);
+    const { status, header, body } = response;
+    const {
+      _id,
+      title,
+      description,
+      keyword,
+      source,
+      url,
+      urlToImage,
+      publishedAt,
+    } = body;
+    articleID = _id;
+    expect(status).toBe(201);
+    expect(header['content-type']).toMatch(/json/);
+    expect(typeof title).toBe('string');
+    expect(typeof description).toBe('string');
+    expect(typeof keyword).toBe('string');
+    expect(typeof source).toBe('string');
+    expect(typeof url).toBe('string');
+    expect(typeof urlToImage).toBe('string');
+    expect(typeof publishedAt).toBe('string');
+  });
+});
+
+describe('GET "/articles"', () => {
+  it('#SUCCESS - Should fetch a list of articles with authenticated user ID and respond with articles data and status 200', async () => {
+    const response = await request
+      .get('/articles')
+      .set('accept', 'application/json')
+      .set('authorization', `Bearer ${token}`);
+    const { status, header, body } = response;
+    expect(status).toBe(200);
+    body.forEach((article) => {
+      const {
+        title,
+        description,
+        keyword,
+        source,
+        url,
+        urlToImage,
+        publishedAt,
+      } = article;
+      expect(header['content-type']).toMatch(/json/);
+      expect(typeof title).toBe('string');
+      expect(typeof description).toBe('string');
+      expect(typeof keyword).toBe('string');
+      expect(typeof source).toBe('string');
+      expect(typeof url).toBe('string');
+      expect(typeof urlToImage).toBe('string');
+      expect(typeof publishedAt).toBe('string');
+    });
+  });
+});
+
+describe('DELETE "/articles/:articleId"', () => {
+  it('#SUCCESS - Should remove an articles by its ID and return status 204', async () => {
+    const response = await request
+      .delete(`/articles/${articleID}`)
+      .set('authorization', `Bearer ${token}`);
+    const { status } = response;
+    expect(status).toBe(204);
   });
 });
