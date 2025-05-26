@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
+const cors = require('cors');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const { errors } = require('celebrate');
 const usersRouter = require('./routes/users');
@@ -28,6 +29,9 @@ const { PORT = API_PORT } = process.env;
 app.use(express.json());
 
 app.use(requestLogger);
+
+app.use(cors());
+app.options('*', cors());
 
 app.post('/signup', validateSignup, createUser);
 app.post('/signin', validateLogin, login);
