@@ -13,11 +13,10 @@ const validUser = {
 };
 
 let token;
-let articleURL;
+let articleID;
 
 afterAll(async () => {
   await User.findOneAndDelete({ email: validUser.email });
-  await Article.findOneAndDelete({ url: articleURL });
   await mongoose.connection.close();
 });
 
@@ -82,6 +81,7 @@ describe('POST "/articles"', () => {
       .set('authorization', `Bearer ${token}`);
     const { status, header, body } = response;
     const {
+      _id,
       title,
       description,
       keyword,
@@ -90,8 +90,7 @@ describe('POST "/articles"', () => {
       urlToImage,
       publishedAt,
     } = body;
-    articleURL = url;
-    console.log(articleURL);
+    articleID = _id;
     expect(status).toBe(201);
     expect(header['content-type']).toMatch(/json/);
     expect(typeof title).toBe('string');
@@ -131,5 +130,15 @@ describe('GET "/articles"', () => {
       expect(typeof urlToImage).toBe('string');
       expect(typeof publishedAt).toBe('string');
     });
+  });
+});
+
+describe('DELETE "/articles/:articleId"', () => {
+  it('#SUCCESS - Should remove an articles by its ID and return status 204', async () => {
+    const response = await request
+      .delete(`/articles/${articleID}`)
+      .set('authorization', `Bearer ${token}`);
+    const { status } = response;
+    expect(status).toBe(204);
   });
 });
