@@ -10,7 +10,10 @@ const { createUser, login } = require('./controllers/users');
 const NotFoundError = require('./utils/errors/NotFoundError');
 const errorHandler = require('./middlewares/errorHandler');
 const auth = require('./middlewares/auth');
-const { validateLogin, validateSignup } = require('./middlewares/validators/usersValidators');
+const {
+  validateLogin,
+  validateSignup,
+} = require('./middlewares/validators/usersValidators');
 
 mongoose
   .connect('mongodb://localhost:27017/newsexplorerdb')
