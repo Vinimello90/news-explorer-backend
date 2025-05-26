@@ -34,4 +34,4 @@ const articleSchema = new mongoose.Schema({
   owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
 });
 
-module.exports = mongoose.model('Card', articleSchema);
+module.exports = mongoose.model('Article', articleSchema);
