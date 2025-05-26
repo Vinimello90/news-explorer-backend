@@ -12,16 +12,14 @@ const errorHandler = require('./middlewares/errorHandler');
 const auth = require('./middlewares/auth');
 const { validateLogin, validateSignup } = require('./middlewares/validators/usersValidators');
 
-const { API_PORT, DATABASE_URL } = process.env;
-
 mongoose
-  .connect(DATABASE_URL)
+  .connect('mongodb://localhost:27017/newsexplorerdb')
   .then(() => console.log('MongoDB connection established'))
   .catch(() => console.error('Failed to connect to MongoDB'));
 
 const app = express();
 
-const { PORT = API_PORT } = process.env;
+const { PORT = 3000 } = process.env;
 
 app.use(express.json());
 
@@ -49,7 +47,7 @@ app.use(errorHandler);
 
 if (process.env.NODE_ENV !== 'test') {
   app.listen(PORT, () => {
-    console.log(`App listening to port ${API_PORT}`);
+    console.log(`App listening to port ${PORT}`);
   });
 }
 
