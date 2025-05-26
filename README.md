@@ -13,8 +13,6 @@ Este é um projeto de API **RESTful** desenvolvido com **Node.js**, **Express.js
 - Cors
 - Winston
 - Joi / Celebrate
-- PM2
-- Nginx
 
 ## Descrição das Tecnologias e Técnicas Utilizadas
 
@@ -57,14 +55,6 @@ Utilizo a biblioteca **winston** para registrar logs da aplicação. Em conjunto
 ### Joi / Celebrate
 
 Uso o **Joi** para definir e validar esquemas de dados. Já o **Celebrate** é um middleware do **Express** que aplica essas validações automaticamente nas requisições HTTP. Com os dois juntos, consigo garantir entradas seguras e bem estruturadas nas minhas APIs.
-
-### PM2
-
-Utilizo o **PM2** como gerenciador de processos para aplicações **Node.js**. Ele mantém minha API sempre ativa e, caso ocorra alguma falha ou reinicialização do servidor, o **PM2** religa automaticamente a aplicação.
-
-### Nginx
-
-Emprego o **Nginx** como servidor web e proxy reverso. Com ele, consigo redirecionar subdomínios para diferentes destinos — como uma API ou a página web do aplicativo. Também configuro o **CSP (Content Security Policy)** diretamente nos headers das respostas do servidor, reforçando a segurança da aplicação.
 
 ## Documentação
 
