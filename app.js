@@ -7,6 +7,7 @@ const { createUser, login } = require('./controllers/users');
 const NotFoundError = require('./utils/errors/NotFoundError');
 const errorHandler = require('./middlewares/errorHandler');
 const auth = require('./middlewares/auth');
+const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const { API_PORT, DATABASE_URL } = process.env;
 
@@ -21,6 +22,8 @@ const { PORT = API_PORT } = process.env;
 
 app.use(express.json());
 
+app.use(requestLogger);
+
 app.post('/signup', createUser);
 app.post('/signin', login);
 
@@ -31,6 +34,8 @@ app.use('/articles', articlesRouter);
 app.use('*', (req, res, next) => {
   next(new NotFoundError('The request was not found.'));
 });
+
+app.use(errorLogger);
 
 app.use(errorHandler);
 
