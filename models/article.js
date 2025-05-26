@@ -21,14 +21,24 @@ const articleSchema = new mongoose.Schema({
     type: String,
     required: true,
     unique: true,
-    validator: (url) => /^(https?:\/\/|w{3}\.)([\w-]+\.)+([\w]{2,})(\/[\w._~:/?%#[\]@!$&'()*+,;=-]*)?$/.test(url),
-    message: '`link` value is not a valid URL',
+    validate: {
+      validator: (url) =>
+        /^(https?:\/\/|w{3}\.)([\w-]+\.)+([\w]{2,})(\/[\w._~:/?%#[\]@!$&'()*+,;=-]*)?$/.test(
+          url,
+        ),
+      message: '`link` value is not a valid URL',
+    },
   },
   urlToImage: {
     type: String,
     required: true,
-    validator: (url) => /^(https?:\/\/|w{3}\.)([\w-]+\.)+([\w]{2,})(\/[\w._~:/?%#[\]@!$&'()*+,;=-]*)?$/.test(url),
-    message: '`link` value is not a valid URL',
+    validate: {
+      validator: (url) =>
+        /^(https?:\/\/|w{3}\.)([\w-]+\.)+([\w]{2,})(\/[\w._~:/?%#[\]@!$&'()*+,;=-]*)?$/.test(
+          url,
+        ),
+      message: '`link` value is not a valid URL',
+    },
   },
   publishedAt: String,
   owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
