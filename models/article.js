@@ -22,10 +22,7 @@ const articleSchema = new mongoose.Schema({
     required: true,
     unique: true,
     validate: {
-      validator: (url) =>
-        /^(https?:\/\/|w{3}\.)([\w-]+\.)+([\w]{2,})(\/[\w._~:/?%#[\]@!$&'()*+,;=-]*)?$/.test(
-          url,
-        ),
+      validator: (url) => /^(https?:\/\/|w{3}\.)([\w-]+\.)+([\w]{2,})(\/[\w._~:/?%#[\]@!$&'()*+,;=-]*)?$/.test(url),
       message: '`link` value is not a valid URL',
     },
   },
@@ -33,10 +30,7 @@ const articleSchema = new mongoose.Schema({
     type: String,
     required: true,
     validate: {
-      validator: (url) =>
-        /^(https?:\/\/|w{3}\.)([\w-]+\.)+([\w]{2,})(\/[\w._~:/?%#[\]@!$&'()*+,;=-]*)?$/.test(
-          url,
-        ),
+      validator: (url) => /^(https?:\/\/|w{3}\.)([\w-]+\.)+([\w]{2,})(\/[\w._~:/?%#[\]@!$&'()*+,;=-]*)?$/.test(url),
       message: '`link` value is not a valid URL',
     },
   },
