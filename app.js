@@ -12,7 +12,7 @@ const auth = require('./middlewares/auth');
 const {
   validateLogin,
   validateSignup,
-} = require('./utils/validators/usersValidators');
+} = require('./middlewares/validators/usersValidators');
 
 const { API_PORT, DATABASE_URL } = process.env;
 

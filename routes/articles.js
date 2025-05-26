@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const {
   validateCreateArticle,
-} = require('../utils/validators/articlesValidators');
+} = require('../middlewares/validators/articlesValidators');
 const {
   createArticle,
   getArticles,
