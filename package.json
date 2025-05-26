@@ -1,0 +1,49 @@
+{
+  "name": "news-explorer-backend",
+  "version": "1.0.0",
+  "description": "NewsExplorer API, manage user profile(username, email, password) authorization and interact with news card containing title, description, image url and url",
+  "main": "app.js",
+  "scripts": {
+    "lint": "npx eslint .",
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Vinimello90/news-explorer-backend.git"
+  },
+  "keywords": [
+    "API",
+    "NewsExplorer",
+    "news",
+    "articles"
+  ],
+  "author": "Vinicius Barretto Mello",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Vinimello90/news-explorer-backend/issues"
+  },
+  "homepage": "https://github.com/Vinimello90/news-explorer-backend#readme",
+  "devDependencies": {
+    "eslint": "^8.56.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.31.0",
+    "jest": "^29.7.0",
+    "nodemon": "^3.1.9",
+    "supertest": "^7.1.0"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "celebrate": "^15.0.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^4.21.2",
+    "express-winston": "^4.2.0",
+    "joi": "^17.13.3",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.13.2",
+    "validator": "^13.15.0",
+    "winston": "^3.17.0"
+  }
+}
