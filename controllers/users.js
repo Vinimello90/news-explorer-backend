@@ -1,6 +1,9 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
+const NotFoundError = require('../utils/errors/NotFoundError');
+const UnauthorizedError = require('../utils/errors/UnauthorizedError');
+const { forbidden } = require('joi');
 
 const { NODE_ENV, JWT_SECRET } = process.env;
 
@@ -31,7 +34,9 @@ module.exports.createUser = async (req, res, next) => {
 module.exports.getMe = async (req, res, next) => {
   try {
     const { _id } = req.user;
-    const user = await User.findById(_id);
+    const user = await User.findById(_id).orFail(() => {
+      throw new UnauthorizedError('User not found. Please Login again.');
+    });
     res.status(200).send(user);
   } catch (err) {
     next(err);
