@@ -11,6 +11,7 @@ module.exports.getArticles = async (req, res, next) => {
     next(err);
   }
 };
+
 module.exports.createArticle = async (req, res, next) => {
   try {
     const { _id } = req.user;
@@ -35,6 +36,7 @@ module.exports.createArticle = async (req, res, next) => {
     });
     res.status(201).send(newArticle);
   } catch (err) {
+    console.log(err);
     next(err);
   }
 };
@@ -51,7 +53,7 @@ module.exports.removeArticles = async (req, res, next) => {
       throw new ForbiddenError('User not authorized to delete this article.');
     }
     await currentArticle.deleteOne();
-    res.status(204).send();
+    res.status(200).send({ message: 'Article removed successfully.' });
   } catch (err) {
     next(err);
   }
