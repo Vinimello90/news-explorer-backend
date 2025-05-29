@@ -36,7 +36,6 @@ module.exports.createArticle = async (req, res, next) => {
     });
     res.status(201).send(newArticle);
   } catch (err) {
-    console.log(err);
     next(err);
   }
 };
