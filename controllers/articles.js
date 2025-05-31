@@ -15,7 +15,15 @@ module.exports.getArticles = async (req, res, next) => {
 module.exports.createArticle = async (req, res, next) => {
   try {
     const { _id } = req.user;
-    const { title, description, keyword, source, url, urlToImage, publishedAt } = req.body;
+    const {
+      title,
+      description,
+      keyword,
+      source,
+      url,
+      urlToImage,
+      publishedAt,
+    } = req.body;
     const newArticle = await Article.create({
       title,
       description,
