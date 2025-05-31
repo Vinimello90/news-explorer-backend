@@ -82,7 +82,7 @@ JSON
 ```
 
 ```bash
-http://localhost:3000/signin
+https://api.newsexplorer.protechadvanced.com/signin
 ```
 
 ### POST /signup
@@ -110,7 +110,7 @@ JSON
 Endereço (URL)
 
 ```bash
-http://localhost:3000/signup
+https://api.newsexplorer.protechadvanced.com/signup
 ```
 
 ### GET /users/me
@@ -122,7 +122,7 @@ Retorna os dados de um usuário específico com base no **ID** do usuário autor
 Exemplo:
 
 ```bash
-http://localhost:3000/users/me
+https://api.newsexplorer.protechadvanced.com/users/me
 ```
 
 ### GET /articles
@@ -134,7 +134,7 @@ Retorna todos os dados dos artigos com o ID do usuário autorizado em formato JS
 Exemplo:
 
 ```bash
-http://localhost:3000/articles
+https://api.newsexplorer.protechadvanced.com/articles
 ```
 
 ### POST /articles
@@ -176,12 +176,12 @@ JSON
 Endereço (URL)
 
 ```bash
-http://localhost:3000/articles
+https://api.newsexplorer.protechadvanced.com/articles
 ```
 
-### DELETE /articles/:articleId
+### GET /articles/:articleId
 
-Busca um artigo específico com base no **ID** do artigo se o **ID** do usuário autorizado for o mesmo do proprietário do artigo.
+Retorna um artigo específico com base no **ID** do artigo se o **ID** do usuário autorizado for o mesmo do proprietário do artigo.
 
 \* É necessário enviar o token no headers para autorização.
 
@@ -190,7 +190,7 @@ Busca um artigo específico com base no **ID** do artigo se o **ID** do usuário
 Endereço (URL)
 
 ```bash
-http://localhost:3000/articles/12345
+https://api.newsexplorer.protechadvanced.com/articles/12345
 ```
 
 Substitua **12345** pelo **ID** do artigo desejado.
@@ -206,7 +206,7 @@ Remove um artigo específico com base no **ID** do artigo se o **ID** do usuári
 Endereço (URL)
 
 ```bash
-http://localhost:3000/articles/12345
+https://api.newsexplorer.protechadvanced.com/articles/12345
 ```
 
 Substitua **12345** pelo **ID** do artigo desejado.
