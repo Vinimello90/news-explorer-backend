@@ -34,7 +34,7 @@ const articleSchema = new mongoose.Schema({
     },
   },
   publishedAt: String,
-  owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  owner: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'User' },
 });
 
 articleSchema.index({ url: 1, owner: 1 }, { unique: true });

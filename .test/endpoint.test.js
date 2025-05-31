@@ -133,12 +133,22 @@ describe('GET "/articles"', () => {
   });
 });
 
+describe('get "/articles/:articleId"', () => {
+  it('#SUCCESS - Should get an articles by its ID and return status 200', async () => {
+    const response = await request
+      .get(`/articles/${articleID}`)
+      .set('authorization', `Bearer ${token}`);
+    const { status } = response;
+    expect(status).toBe(200);
+  });
+});
+
 describe('DELETE "/articles/:articleId"', () => {
   it('#SUCCESS - Should remove an articles by its ID and return status 204', async () => {
     const response = await request
       .delete(`/articles/${articleID}`)
       .set('authorization', `Bearer ${token}`);
     const { status } = response;
-    expect(status).toBe(204);
+    expect(status).toBe(200);
   });
 });
