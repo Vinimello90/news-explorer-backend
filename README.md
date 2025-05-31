@@ -181,6 +181,22 @@ http://localhost:3000/articles
 
 ### DELETE /articles/:articleId
 
+Busca um artigo específico com base no **ID** do artigo se o **ID** do usuário autorizado for o mesmo do proprietário do artigo.
+
+\* É necessário enviar o token no headers para autorização.
+
+**Exemplo**
+
+Endereço (URL)
+
+```bash
+http://localhost:3000/articles/12345
+```
+
+Substitua **12345** pelo **ID** do artigo desejado.
+
+### DELETE /articles/:articleId
+
 Remove um artigo específico com base no **ID** do artigo se o **ID** do usuário autorizado for o mesmo do proprietário do artigo.
 
 \* É necessário enviar o token no headers para autorização.
