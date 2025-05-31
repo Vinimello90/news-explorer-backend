@@ -5,11 +5,13 @@ const {
 const {
   createArticle,
   getArticles,
-  removeArticles,
+  removeArticle,
+  getArticleById,
 } = require('../controllers/articles');
 
 router.post('/', validateCreateArticle, createArticle);
 router.get('/', getArticles);
-router.delete('/:articleId', removeArticles);
+router.get('/:articleId', getArticleById);
+router.delete('/:articleId', removeArticle);
 
 module.exports = router;

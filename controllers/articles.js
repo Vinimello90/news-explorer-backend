@@ -2,6 +2,22 @@ const Article = require('../models/article');
 const NotFoundError = require('../utils/errors/NotFoundError');
 const ForbiddenError = require('../utils/errors/ForbiddenError');
 
+module.exports.getArticleById = async (req, res, next) => {
+  try {
+    const { _id } = req.user;
+    const { articleId } = req.params;
+    const article = await Article.findById(articleId).orFail(() => {
+      throw new NotFoundError('No article found with the specified ID.');
+    });
+    if (_id !== article.owner.toString()) {
+      throw new ForbiddenError('User not authorized to fetch this article.');
+    }
+    res.status(200).send(article);
+  } catch (err) {
+    next(err);
+  }
+};
+
 module.exports.getArticles = async (req, res, next) => {
   try {
     const { _id } = req.user;
@@ -11,6 +27,7 @@ module.exports.getArticles = async (req, res, next) => {
     next(err);
   }
 };
+
 module.exports.createArticle = async (req, res, next) => {
   try {
     const { _id } = req.user;
@@ -39,7 +56,7 @@ module.exports.createArticle = async (req, res, next) => {
   }
 };
 
-module.exports.removeArticles = async (req, res, next) => {
+module.exports.removeArticle = async (req, res, next) => {
   try {
     const { _id } = req.user;
     const { articleId } = req.params;
@@ -51,7 +68,7 @@ module.exports.removeArticles = async (req, res, next) => {
       throw new ForbiddenError('User not authorized to delete this article.');
     }
     await currentArticle.deleteOne();
-    res.status(204).send();
+    res.status(200).send({ message: 'Article removed successfully.' });
   } catch (err) {
     next(err);
   }
