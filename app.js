@@ -15,14 +15,16 @@ const {
   validateSignup,
 } = require('./middlewares/validators/usersValidators');
 
+const { API_PORT, DATABASE_URL } = process.env;
+
 mongoose
-  .connect('mongodb://localhost:27017/newsexplorerdb')
+  .connect(DATABASE_URL)
   .then(() => console.log('MongoDB connection established'))
   .catch(() => console.error('Failed to connect to MongoDB'));
 
 const app = express();
 
-const { PORT = 3000 } = process.env;
+const { PORT = API_PORT } = process.env;
 
 app.use(express.json());
 
