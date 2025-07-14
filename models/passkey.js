@@ -10,7 +10,7 @@ const passkeySchema = new mongoose.Schema({
     type: Buffer,
     required: true,
   },
-  user: {
+  userID: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
     ref: 'User',

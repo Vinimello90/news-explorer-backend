@@ -6,6 +6,7 @@ const { errors } = require('celebrate');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const usersRouter = require('./routes/users');
 const articlesRouter = require('./routes/articles');
+const passkeysRouter = require('./routes/passkeys');
 const { createUser, login } = require('./controllers/users');
 const NotFoundError = require('./utils/errors/NotFoundError');
 const errorHandler = require('./middlewares/errorHandler');
@@ -14,6 +15,7 @@ const {
   validateLogin,
   validateSignup,
 } = require('./middlewares/validators/usersValidators');
+const sessionHandler = require('./middlewares/sessionHandler');
 
 const { API_PORT, DATABASE_URL } = process.env;
 
@@ -33,6 +35,7 @@ app.use(requestLogger);
 app.use(cors());
 app.options('*', cors());
 
+app.use('/passkeys', sessionHandler, passkeysRouter);
 app.post('/signup', validateSignup, createUser);
 app.post('/signin', validateLogin, login);
 
