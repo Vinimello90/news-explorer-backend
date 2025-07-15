@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const passkeySchema = new mongoose.Schema({
   credentialID: {
-    type: Buffer,
+    type: String,
     required: true,
     unique: true,
   },

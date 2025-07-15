@@ -32,7 +32,7 @@ app.use(express.json());
 
 app.use(requestLogger);
 
-app.use(cors());
+app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
 app.options('*', cors());
 
 app.use('/passkeys', sessionHandler, passkeysRouter);

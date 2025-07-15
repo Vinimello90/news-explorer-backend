@@ -5,7 +5,7 @@ module.exports = session({
   resave: false,
   saveUninitialized: false,
   cookie: {
-    httpOnly: false,
+    httpOnly: true,
     secure: false,
     sameSite: 'lax',
     maxAge: 1000 * 60 * 5,
