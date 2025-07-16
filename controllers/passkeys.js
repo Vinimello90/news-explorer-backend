@@ -1,17 +1,19 @@
 const {
   generateRegistrationOptions,
   verifyRegistrationResponse,
+  generateAuthenticationOptions,
+  verifyAuthenticationResponse,
 } = require('@simplewebauthn/server');
 const { isoUint8Array } = require('@simplewebauthn/server/helpers');
 const User = require('../models/user');
 const Passkey = require('../models/passkey');
 const UnauthorizedError = require('../utils/errors/UnauthorizedError');
+const { transport } = require('winston');
 
-module.exports.generateOptions = async (req, res) => {
+module.exports.generateRegistrationOptions = async (req, res) => {
   const _id = '683a55952e8a5e8078bc1b92';
   const user = await User.findById(_id);
   const userPasskeys = await Passkey.find({ userID: _id });
-  console.log(userPasskeys);
   const options = await generateRegistrationOptions({
     rpName: 'NewsExplorer',
     rpID: 'localhost',
@@ -29,15 +31,15 @@ module.exports.generateOptions = async (req, res) => {
       userVerification: 'preferred',
     },
   });
-  req.session.passkeyOptions = options;
-  res.send(options).status(200);
+  req.session.registrationOptions = options;
+  res.status(200).send(options);
 };
 
 module.exports.verifyRegistration = async (req, res) => {
   const { body } = req;
   const _id = '683a55952e8a5e8078bc1b92';
   const user = await User.findById(_id);
-  const currentOption = req.session.passkeyOptions;
+  const currentOption = req.session.registrationOptions;
   let verification;
   try {
     verification = await verifyRegistrationResponse({
@@ -71,5 +73,63 @@ module.exports.verifyRegistration = async (req, res) => {
     backedUp: credentialBackedUp,
     transports: credential.transports,
   };
-  const passkey = await Passkey.create(newPasskey);
+
+  await Passkey.create(newPasskey);
+
+  res.status(201).send(verified);
+};
+
+module.exports.generateAuthenticationOptions = async (req, res) => {
+  const { email } = req.body;
+  const user = await User.findOne({
+    email: email,
+  });
+  const userPasskeys = await Passkey.find({ userID: user._id });
+  const options = await generateAuthenticationOptions({
+    rpID: 'localhost',
+    allowCredentials: userPasskeys.map((passkey) => ({
+      id: passkey.credentialID,
+      transports: passkey.transports,
+    })),
+  });
+
+  req.session.authenticationOptions = options;
+  req.session.userData = user;
+  res.status(200).send(options);
+};
+
+module.exports.verifyAuthentication = async (req, res) => {
+  const response = req.body;
+  const user = req.session.userData;
+  const currentOption = req.session.authenticationOptions;
+  const passkey = await Passkey.findOne({ credentialID: response.id });
+  let verification;
+
+  try {
+    verification = await verifyAuthenticationResponse({
+      response: response,
+      expectedChallenge: currentOption.challenge,
+      expectedOrigin: `http://localhost:5173`,
+      expectedRPID: 'localhost',
+      credential: {
+        id: passkey.credentialID,
+        publicKey: new Uint8Array(passkey.publicKey),
+        counter: passkey.counter,
+        transports: passkey.transports,
+      },
+      requireUserVerification: false,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(400).send({ error: err.message });
+  }
+  const { verified, authenticationInfo } = verification;
+  if (!verified) {
+    return new UnauthorizedError('error');
+  }
+  await Passkey.findByIdAndUpdate(passkey._id, {
+    counter: authenticationInfo.counter,
+  });
+
+  res.status(200).send(verification);
 };
