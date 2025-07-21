@@ -35,7 +35,9 @@ app.use(requestLogger);
 app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
 app.options('*', cors());
 
-app.use('/passkeys', sessionHandler, passkeysRouter);
+app.use(sessionHandler);
+
+app.use('/passkeys', passkeysRouter);
 app.post('/signup', validateSignup, createUser);
 app.post('/signin', validateLogin, login);
 

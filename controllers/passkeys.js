@@ -8,10 +8,10 @@ const { isoUint8Array } = require('@simplewebauthn/server/helpers');
 const User = require('../models/user');
 const Passkey = require('../models/passkey');
 const UnauthorizedError = require('../utils/errors/UnauthorizedError');
-const { transport } = require('winston');
+const { generateToken } = require('../utils/authTokens');
 
 module.exports.generateRegistrationOptions = async (req, res) => {
-  const _id = '683a55952e8a5e8078bc1b92';
+  const _id = req.session.userId;
   const user = await User.findById(_id);
   const userPasskeys = await Passkey.find({ userID: _id });
   const options = await generateRegistrationOptions({
@@ -37,7 +37,7 @@ module.exports.generateRegistrationOptions = async (req, res) => {
 
 module.exports.verifyRegistration = async (req, res) => {
   const { body } = req;
-  const _id = '683a55952e8a5e8078bc1b92';
+  const _id = req.session.userId || req.user;
   const user = await User.findById(_id);
   const currentOption = req.session.registrationOptions;
   let verification;
@@ -130,6 +130,6 @@ module.exports.verifyAuthentication = async (req, res) => {
   await Passkey.findByIdAndUpdate(passkey._id, {
     counter: authenticationInfo.counter,
   });
-
-  res.status(200).send(verification);
+  const token = generateToken(user);
+  res.status(200).send({ token });
 };
