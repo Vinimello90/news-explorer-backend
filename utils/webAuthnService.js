@@ -51,7 +51,7 @@ module.exports = {
 
   verifyAuthentication(response, challenge, passkey) {
     return verifyAuthenticationResponse({
-      response: response,
+      response,
       expectedChallenge: challenge,
       expectedOrigin: WEBAUTHN_RP_ORIGIN,
       expectedRPID: WEBAUTHN_RP_ID,
