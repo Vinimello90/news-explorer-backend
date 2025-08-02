@@ -11,13 +11,10 @@ const { createUser, login } = require('./controllers/users');
 const NotFoundError = require('./utils/errors/NotFoundError');
 const errorHandler = require('./middlewares/errorHandler');
 const auth = require('./middlewares/auth');
-const {
-  validateLogin,
-  validateSignup,
-} = require('./middlewares/validators/usersValidators');
+const { validateLogin, validateSignup } = require('./middlewares/validators/usersValidators');
 const sessionHandler = require('./middlewares/sessionHandler');
 
-const { API_PORT, DATABASE_URL } = process.env;
+const { API_PORT, DATABASE_URL, ORIGIN } = process.env;
 
 mongoose
   .connect(DATABASE_URL)
@@ -32,7 +29,7 @@ app.use(express.json());
 
 app.use(requestLogger);
 
-app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
+app.use(cors({ origin: ORIGIN, credentials: true }));
 app.options('*', cors());
 
 app.use(sessionHandler);

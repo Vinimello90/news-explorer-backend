@@ -1,4 +1,5 @@
 const session = require('express-session');
+
 const { SESSION_SECRET } = process.env;
 
 module.exports = session({

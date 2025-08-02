@@ -7,7 +7,7 @@ const {
   getRegistrationOptions,
   getAuthenticationOptions,
   verifyAuthentication,
-} = require('../utils/WebAuthnService');
+} = require('../utils/webAuthnService');
 
 module.exports.registerOptions = async (req, res, next) => {
   try {
@@ -28,18 +28,14 @@ module.exports.registerVerify = async (req, res, next) => {
     const _id = req.session.userId;
     const user = await User.findById(_id);
     const currentOption = req.session.registrationOptions;
-    const verification = await verifyRegistration(
-      body,
-      currentOption.challenge,
-    );
+    const verification = await verifyRegistration(body, currentOption.challenge);
     const { verified } = verification;
 
     if (!verified) {
-      return new UnauthorizedError('error');
+      throw new UnauthorizedError('error');
     }
 
-    const { credential, credentialDeviceType, credentialBackedUp } =
-      verification.registrationInfo;
+    const { credential, credentialDeviceType, credentialBackedUp } = verification.registrationInfo;
 
     const newPasskey = {
       credentialID: credential.id,
@@ -61,9 +57,9 @@ module.exports.registerVerify = async (req, res, next) => {
 
 module.exports.authOptions = async (req, res, next) => {
   try {
-    const { email } = req.body;
+    const { userEmail } = req.body;
     const user = await User.findOne({
-      email: email,
+      email: userEmail,
     });
     const userPasskeys = await Passkey.find({ userID: user?._id });
     const options = await getAuthenticationOptions(userPasskeys);
@@ -81,16 +77,10 @@ module.exports.authVerify = async (req, res, next) => {
     const response = req.body;
     const user = req.session.userData;
     const currentOption = req.session.authenticationOptions;
-    const passkey = await Passkey.findOne({ credentialID: response.id }).orFail(
-      () => {
-        throw new UnauthorizedError('Invalid e-mail or passkey');
-      },
-    );
-    const verification = await verifyAuthentication(
-      response,
-      currentOption.challenge,
-      passkey,
-    );
+    const passkey = await Passkey.findOne({ credentialID: response.id }).orFail(() => {
+      throw new UnauthorizedError('Invalid e-mail or passkey');
+    });
+    const verification = await verifyAuthentication(response, currentOption.challenge, passkey);
     const { verified, authenticationInfo } = verification;
     if (!verified) {
       throw new UnauthorizedError('Invalid e-mail or passkey');
