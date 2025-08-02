@@ -34,11 +34,13 @@
     "supertest": "^7.1.0"
   },
   "dependencies": {
+    "@simplewebauthn/server": "^13.1.2",
     "bcryptjs": "^3.0.2",
     "celebrate": "^15.0.3",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "express": "^4.21.2",
+    "express-session": "^1.18.1",
     "express-winston": "^4.2.0",
     "joi": "^17.13.3",
     "jsonwebtoken": "^9.0.2",
