@@ -76,7 +76,6 @@ module.exports.authVerify = async (req, res, next) => {
   try {
     const response = req.body;
     const user = req.session.userData;
-    console.log(req.session);
     const currentOption = req.session.authenticationOptions;
     const passkey = await Passkey.findOne({ credentialID: response.id }).orFail(() => {
       throw new UnauthorizedError('Invalid e-mail or passkey');

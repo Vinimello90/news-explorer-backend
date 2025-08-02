@@ -41,7 +41,7 @@ module.exports = {
 
   getAuthenticationOptions(userPasskeys) {
     return generateAuthenticationOptions({
-      rpID: 'localhost',
+      rpID: WEBAUTHN_RP_ID,
       allowCredentials: userPasskeys.map((passkey) => ({
         id: passkey.credentialID,
         transports: passkey.transports,
