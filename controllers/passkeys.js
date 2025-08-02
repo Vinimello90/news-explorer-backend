@@ -57,7 +57,7 @@ module.exports.registerVerify = async (req, res, next) => {
 
 module.exports.authOptions = async (req, res, next) => {
   try {
-    const { userEmail } = req.body;
+    const { email: userEmail } = req.body;
     const user = await User.findOne({
       email: userEmail,
     });
@@ -76,6 +76,7 @@ module.exports.authVerify = async (req, res, next) => {
   try {
     const response = req.body;
     const user = req.session.userData;
+    console.log(req.session);
     const currentOption = req.session.authenticationOptions;
     const passkey = await Passkey.findOne({ credentialID: response.id }).orFail(() => {
       throw new UnauthorizedError('Invalid e-mail or passkey');
@@ -91,6 +92,7 @@ module.exports.authVerify = async (req, res, next) => {
     const token = generateToken(user);
     res.status(200).send({ token });
   } catch (err) {
+    console.log(err);
     next(err);
   }
 };

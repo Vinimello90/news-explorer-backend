@@ -23,6 +23,8 @@ mongoose
 
 const app = express();
 
+app.set('trust proxy', 1);
+
 const { PORT = API_PORT } = process.env;
 
 app.use(express.json());
