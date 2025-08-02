@@ -1,14 +1,14 @@
 const router = require('express').Router();
 const {
-  generateRegistrationOptions,
-  verifyRegistration,
-  generateAuthenticationOptions,
-  verifyAuthentication,
+  registerOptions,
+  registerVerify,
+  authOptions,
+  authVerify,
 } = require('../controllers/passkeys');
 
-router.post('/register/options', generateRegistrationOptions);
-router.post('/register/verify', verifyRegistration);
-router.post('/authentication/options', generateAuthenticationOptions);
-router.post('/authentication/verify', verifyAuthentication);
+router.post('/register/options', registerOptions);
+router.post('/register/verify', registerVerify);
+router.post('/authentication/options', authOptions);
+router.post('/authentication/verify', authVerify);
 
 module.exports = router;

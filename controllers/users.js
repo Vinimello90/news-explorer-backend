@@ -35,7 +35,6 @@ module.exports.getMe = async (req, res, next) => {
       throw new UnauthorizedError('User not found. Please Login again.');
     });
     const passkeys = await passkey.find({ userID: _id });
-    console.log(passkeys);
     if (passkeys.length > 0) {
       res.status(200).send({ user, hasPasskey: true });
     } else {
