@@ -6,14 +6,14 @@ const {
 } = require('@simplewebauthn/server');
 const { isoUint8Array } = require('@simplewebauthn/server/helpers');
 
-const { WEBAUTHN_RP_NAME, WEBAUTHN_RP_ID, WEBAUTHN_RP_ORIGIN } = process.env;
+const { WEBAUTHN_RP_NAME, WEBAUTHN_RP_ID, ORIGIN } = process.env;
 
 module.exports = {
   getRegistrationOptions(user, userPasskeys) {
     return generateRegistrationOptions({
       rpName: WEBAUTHN_RP_NAME,
       rpID: WEBAUTHN_RP_ID,
-      origin: WEBAUTHN_RP_ORIGIN,
+      origin: ORIGIN,
       userName: user.email,
       userDisplayName: user.email,
       userID: isoUint8Array.fromUTF8String(user._id),
@@ -33,7 +33,7 @@ module.exports = {
     return verifyRegistrationResponse({
       response,
       expectedChallenge,
-      expectedOrigin: WEBAUTHN_RP_ORIGIN,
+      expectedOrigin: ORIGIN,
       expectedRPID: WEBAUTHN_RP_ID,
       requireUserVerification: false,
     });
@@ -53,7 +53,7 @@ module.exports = {
     return verifyAuthenticationResponse({
       response,
       expectedChallenge: challenge,
-      expectedOrigin: WEBAUTHN_RP_ORIGIN,
+      expectedOrigin: ORIGIN,
       expectedRPID: WEBAUTHN_RP_ID,
       credential: {
         id: passkey.credentialID,
